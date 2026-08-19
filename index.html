@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6d2626">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CartoNath">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="styles.v04.css">
+<title>CartoNath Agenda</title>
+</head>
+<body>
+<div id="fatal" class="fatal hidden"></div>
+<div id="toast" class="toast hidden"></div>
+<div id="app">
+<header class="topbar">
+  <div><div class="brand">CARTONATH <span>✦</span></div><div id="todayLabel" class="muted"></div></div>
+  <button id="openMethodsBtn" class="icon-btn" aria-label="Métodos">☰</button>
+</header>
+<main>
+<section id="view-hoje" class="view active">
+  <div class="hero"><div class="eyebrow">Próximo atendimento</div><div id="nextAppointment"></div></div>
+  <div class="section-head"><h2>Hoje</h2><button class="link" data-nav="agenda">Ver agenda</button></div>
+  <div id="todayAppointments" class="stack"></div>
+  <div class="section-head"><h2>Este mês</h2><button class="link" data-nav="financeiro">Ver financeiro</button></div>
+  <div class="money-grid">
+    <div class="metric"><span>Recebido</span><strong id="monthReceived"></strong></div>
+    <div class="metric"><span>A receber</span><strong id="monthReceivable"></strong></div>
+    <div class="metric wide"><span>Faturado</span><strong id="monthBilled"></strong></div>
+  </div>
+</section>
+
+<section id="view-agenda" class="view">
+  <div class="section-head"><h1>Agenda</h1><button id="todayBtn" class="link">Hoje</button></div>
+  <div class="calendar-card">
+    <div class="calendar-head"><button id="prevMonthBtn" class="icon-btn small">‹</button><strong id="calendarTitle"></strong><button id="nextMonthBtn" class="icon-btn small">›</button></div>
+    <div class="weekdays"><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span><span>DOM</span></div>
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
+  <div class="section-head"><h2 id="selectedDateTitle"></h2></div>
+  <div id="selectedDateAppointments" class="stack"></div>
+</section>
+
+<section id="view-clientes" class="view">
+  <div class="section-head"><h1>Clientes</h1><button id="newClientBtn" class="mini">+ Cliente</button></div>
+  <input id="clientSearch" placeholder="Buscar cliente...">
+  <div id="clientList" class="stack top-gap"></div>
+</section>
+
+<section id="view-financeiro" class="view">
+  <div class="section-head"><h1>Financeiro</h1></div>
+  <div class="calendar-head"><button id="prevFinanceMonthBtn" class="icon-btn small">‹</button><strong id="financeMonthTitle"></strong><button id="nextFinanceMonthBtn" class="icon-btn small">›</button></div>
+  <div class="money-grid">
+    <div class="metric"><span>Recebido</span><strong id="financeReceived"></strong></div>
+    <div class="metric"><span>A receber</span><strong id="financeReceivable"></strong></div>
+    <div class="metric wide"><span>Faturado</span><strong id="financeBilled"></strong></div>
+  </div>
+  <div class="section-head"><h2>Por pagamento</h2></div><div id="paymentBreakdown" class="stack"></div>
+  <div class="section-head"><h2>Lançamentos</h2></div><div id="financeList" class="stack"></div>
+</section>
+</main>
+<button id="newAppointmentBtn" class="fab">+</button>
+<nav class="bottom-nav">
+<button class="nav active" data-view="hoje"><b>⌂</b><small>Hoje</small></button>
+<button class="nav" data-view="agenda"><b>▦</b><small>Agenda</small></button>
+<button class="nav" data-view="clientes"><b>◉</b><small>Clientes</small></button>
+<button class="nav" data-view="financeiro"><b>R$</b><small>Financeiro</small></button>
+</nav>
+</div>
+
+<dialog id="appointmentDialog" class="sheet">
+<form id="appointmentForm">
+<div class="sheet-head"><div><div class="eyebrow">CartoNath</div><h2 id="appointmentFormTitle"></h2></div><button type="button" data-close="appointmentDialog" class="icon-btn">×</button></div>
+<div class="sheet-body">
+<input type="hidden" id="appointmentId">
+<label>Cliente<select id="appointmentClient" required></select></label>
+<button id="quickNewClientBtn" type="button" class="secondary">+ Cadastrar cliente</button>
+<label>Método<select id="appointmentMethod" required></select></label>
+<div class="two"><label>Data<input id="appointmentDate" type="date" required></label><label>Horário<input id="appointmentTime" type="time" required></label></div>
+<label>Valor base<input id="appointmentBaseValue" inputmode="decimal" required></label>
+<div class="extra-box"><div class="section-head compact"><h3>Valores extras</h3><button id="addExtraBtn" type="button" class="link">+ Adicionar</button></div><div id="extrasContainer"></div></div>
+<div class="total"><span>Total</span><strong id="appointmentTotal"></strong></div>
+<label>Pagamento<select id="appointmentPaymentMethod"><option>Pix</option><option>Crédito</option><option>Dinheiro</option><option>Outro</option></select></label>
+<label>Status<select id="appointmentFinancialStatus"><option value="pendente">Pendente</option><option value="a_receber">A receber</option><option value="recebido">Recebido</option></select></label>
+<label id="expectedWrap" class="hidden">Previsão de recebimento<input id="appointmentExpectedDate" type="date"></label>
+<label id="receivedWrap" class="hidden">Data do recebimento<input id="appointmentReceivedDate" type="date"></label>
+<label>Resumo<textarea id="appointmentSummary" rows="4" placeholder="Pode preencher depois do atendimento."></textarea></label>
+<div class="actions"><button id="deleteAppointmentBtn" type="button" class="danger hidden">Excluir</button><button class="primary">Salvar atendimento</button></div>
+</div>
+</form>
+</dialog>
+
+<dialog id="clientDialog" class="sheet">
+<form id="clientForm">
+<div class="sheet-head"><div><div class="eyebrow">Ficha</div><h2 id="clientFormTitle"></h2></div><button type="button" data-close="clientDialog" class="icon-btn">×</button></div>
+<div class="sheet-body">
+<input type="hidden" id="clientId">
+<label>Nome<input id="clientName" required></label>
+<label>WhatsApp<input id="clientPhone" inputmode="tel"></label>
+<label>Observações<textarea id="clientNotes" rows="4"></textarea></label>
+<div class="actions"><button id="deleteClientBtn" type="button" class="danger hidden">Excluir</button><button class="primary">Salvar cliente</button></div>
+<div id="clientHistoryWrap" class="hidden"><div class="section-head"><h3>Histórico</h3></div><div id="clientHistory" class="stack"></div></div>
+</div>
+</form>
+</dialog>
+
+<dialog id="methodsDialog" class="sheet">
+<div class="sheet-head"><div><div class="eyebrow">CartoNath</div><h2>Métodos e valores</h2></div><button type="button" data-close="methodsDialog" class="icon-btn">×</button></div>
+<div class="sheet-body">
+<div id="methodsList" class="stack"></div><div class="divider"></div>
+<form id="methodForm"><input type="hidden" id="methodId"><label>Nome<input id="methodName" required></label><label>Valor padrão<input id="methodValue" inputmode="decimal" required></label><div class="actions"><button type="button" id="cancelMethodEditBtn" class="secondary hidden">Cancelar</button><button class="primary">Salvar método</button></div></form>
+</div>
+</dialog>
+
+<script src="core.v04.js"></script><script src="app.v04.js"></script>
+</body></html>
