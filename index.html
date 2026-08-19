@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="CartoNath">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
-<link rel="stylesheet" href="styles.v04.css">
+<link rel="stylesheet" href="styles.v05.css">
 <title>CartoNath Agenda</title>
 </head>
 <body>
@@ -111,9 +111,19 @@
 <div class="sheet-head"><div><div class="eyebrow">CartoNath</div><h2>Métodos e valores</h2></div><button type="button" data-close="methodsDialog" class="icon-btn">×</button></div>
 <div class="sheet-body">
 <div id="methodsList" class="stack"></div><div class="divider"></div>
+<div class="section-head compact"><h3>Dados e backup</h3></div>
+<p class="backup-note">O backup inclui clientes, métodos, agenda, históricos e financeiro. Ele fica em um arquivo no seu aparelho/iCloud.</p>
+<div class="backup-actions">
+  <button type="button" id="exportBackupBtn" class="secondary">Exportar backup</button>
+  <button type="button" id="importBackupBtn" class="secondary">Restaurar backup</button>
+  <button type="button" id="undoRestoreBtn" class="secondary hidden">Desfazer última restauração</button>
+  <input type="file" id="backupFileInput" accept=".json,application/json" class="hidden">
+</div>
+<div id="backupStatus" class="card-meta"></div>
+<div class="divider"></div>
 <form id="methodForm"><input type="hidden" id="methodId"><label>Nome<input id="methodName" required></label><label>Valor padrão<input id="methodValue" inputmode="decimal" required></label><div class="actions"><button type="button" id="cancelMethodEditBtn" class="secondary hidden">Cancelar</button><button class="primary">Salvar método</button></div></form>
 </div>
 </dialog>
 
-<script src="core.v04.js"></script><script src="app.v04.js"></script>
+<script src="core.v05.js"></script><script src="app.v05.js"></script>
 </body></html>

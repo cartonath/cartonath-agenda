@@ -1,53 +1,47 @@
-# CartoNath Agenda v0.4 RC2 — Relatório de pré-release
+# CartoNath Agenda v0.5 RC2 — Relatório de pré-release
 
-## Hardening aplicado
-- dinheiro armazenado em centavos inteiros;
-- banco IndexedDB versão 2 com migração de registros antigos;
-- snapshot do nome do método preservado no histórico;
-- soft-delete com ação Desfazer;
-- métodos são arquivados em vez de destruídos;
-- rascunho automático de novo atendimento;
-- checagem de integridade ao abrir;
-- tela de erro para falha de banco;
-- cache/versionamento explícito da aplicação;
-- navegação network-first e assets versionados;
-- CSS com `dvh`, safe areas e scroll interno dos dialogs;
-- financeiro separado por data de atendimento, previsão e recebimento real;
-- conflito de horário gera aviso, não bloqueio;
-- registros apagados deixam de contaminar agenda/financeiro.
+## Mudança desta versão
+Backup e restauração offline, sem servidor.
 
-## Testes automatizados
-Execute `node tests.js`.
+## Proteções implementadas
+- exportação inclui clientes, métodos, agenda, históricos e dados financeiros;
+- checksum SHA-256 detecta alteração/corrupção do arquivo;
+- importação valida aplicação, versão, estrutura, IDs e referências antes de tocar no banco;
+- restauração usa uma única transação IndexedDB para substituir os três conjuntos principais;
+- antes da restauração, o estado atual é guardado internamente;
+- botão “Desfazer última restauração” recupera esse estado anterior;
+- método personalizado e preço histórico continuam preservados;
+- exportação tenta usar a folha de compartilhamento do aparelho e cai para download se necessário;
+- nenhuma nuvem, conta ou servidor foi adicionado.
 
-Cobertura lógica:
-- precisão monetária;
-- migração v1 -> v2;
-- preservação histórica;
-- faturado x recebido em meses diferentes;
-- a receber por mês previsto;
-- soft-delete;
-- conflito de horário;
-- validações;
-- stress de 1.500 atendimentos / 6 meses.
+## Gates executados
+- Sintaxe JavaScript: PASS em `core.v05.js`, `app.v05.js`, `sw.v05.js`, `tests.js` e `backup_stress.js`.
+- Testes lógicos: 16/16 PASS.
+- Migração legada -> modelo atual: PASS.
+- Precisão monetária em centavos: PASS.
+- Faturado/recebido/a receber em meses diferentes: PASS.
+- Soft-delete: PASS.
+- Conflito de horário: PASS.
+- Backup íntegro: PASS.
+- Backup adulterado: corretamente REJEITADO.
+- Backup com cliente inexistente: corretamente REJEITADO.
+- Backup com ID duplicado: corretamente REJEITADO.
+- Método customizado dentro do backup: PASS.
+- Registros soft-deleted no backup: PASS.
+- Stress operacional base: 1.500 atendimentos / 6 meses: PASS.
+- Stress de backup: 10.000 atendimentos, 500 clientes e 25 métodos: PASS.
+- Tamanho do arquivo no stress de 10.000 atendimentos: ~2,94 MB.
+- Manifest PWA, paths relativos, ícones e cache versionado: PASS.
+- IDs críticos da interface: PASS.
 
-## Limite do teste
-Este pacote não substitui o teste final em um iPhone físico com Safari/Web App instalado.
-Esse teste é obrigatório antes de uso real.
+## Teste E2E de navegador
+Foi tentado Playwright/Chromium em viewport móvel, inclusive com origem interceptada localmente.
+O ambiente desta sessão bloqueou a navegação automatizada com `ERR_BLOCKED_BY_ADMINISTRATOR`.
+Por isso, nenhum teste E2E de navegador foi falsamente marcado como aprovado.
 
-## Resultado desta build
-- `node --check`: 4/4 arquivos JavaScript passaram.
-- testes lógicos: 9/9 passaram após correção de migração detectada pelo gate.
-- stress independente em Python: 5.000 atendimentos / 6 meses, sem inconsistência numérica.
+## Gate ainda obrigatório
+Safari/iPhone físico depois que esta versão for publicada:
+instalação, exportar para Arquivos/iCloud, restaurar, desfazer restauração, teclado, modo avião,
+matar/reabrir o app e reiniciar o aparelho.
 
-## Teste de navegador automatizado
-Foi tentado um teste E2E com Chromium/Playwright em viewport 390×844 e touch.
-O ambiente desta sessão bloqueou navegação automatizada tanto para `localhost` quanto para `file://`
-com `ERR_BLOCKED_BY_ADMINISTRATOR`. Portanto, **nenhum resultado de browser E2E foi considerado como aprovado**.
-O teste físico no iPhone permanece gate obrigatório.
-
-## Gate de release
-- Lógica e sintaxe: APROVADO.
-- Migração representativa v1 -> v2: APROVADA.
-- Stress lógico: APROVADO.
-- Browser E2E neste ambiente: NÃO EXECUTÁVEL por restrição do ambiente.
-- Safari/iPhone físico: PENDENTE.
+Até esse gate passar, a versão é Release Candidate e deve usar apenas dados de teste.

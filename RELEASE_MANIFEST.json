@@ -1,0 +1,22 @@
+{
+  "release": "CartoNath Agenda v0.5 RC2",
+  "built_at": "2026-08-19",
+  "db_version": 2,
+  "backup_version": 1,
+  "files": {
+    "QA_CHECKLIST.md": "6d4552a4b9c95c759f2c3c7d8254602c702eaca18ac49fe54b16679c0562b5d6",
+    "QA_REPORT.md": "caed104259b977acc185b4ee13615c4a358db97cac3bc2711453a59dffd52b26",
+    "README.md": "6db4a7d314944e0007670254df9cbeed3d991c31a694a1cc2e033de5ee4b9dd0",
+    "app.v05.js": "0c10faefd0e28b08b8e5d78c4590657c8ed8a70f7bc11a95a612be2ed8f56cc0",
+    "backup_stress.js": "b6757ddf67011323d59e84b4135c2ad3d12d98c0a8b95a29fb4f96dffdfb3d5b",
+    "core.v05.js": "58cc73038530b6d882a41d63c689a92218953e98b37ec0a20f49533044c0948d",
+    "icons/icon-180.png": "4eec2c31ecdd1b3b9b006cbd8103a9ec32a359649c9e3870b96cc4fa3eb36ed0",
+    "icons/icon-192.png": "03e1396ebfe9adba40378d8563a8693da4fbf65cdf2a2c53ef7422893ca92e2f",
+    "icons/icon-512.png": "1bab0374164362cfb3c0e3815d66654d28976f5f89102fc88996e1d405dab223",
+    "index.html": "af694899a68e818317d794abde72a7f6769a26185360ec6d827cbfb8b61c6d70",
+    "manifest.webmanifest": "c72bcdcdeee7756a5763200f659b354be0d34ec31aad6dcc28ee96b37c2903a5",
+    "styles.v05.css": "b0a14865f0ca784708d859fed6d8ccec7cdb67193087d35c68759b767af0a48e",
+    "sw.v05.js": "24e9c926f2dd7d374f221e719dd2a5c72b82a10c434141f3a7cc5ef244358e8f",
+    "tests.js": "0d8cee8c70a0354a2be3cc44d5b0a1e381dcd9d6b03839d4f3754622e71be530"
+  }
+}
